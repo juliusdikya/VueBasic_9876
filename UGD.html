@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unguided</title>
+    <script src="vue.js"></script>
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous"> -->
+</head>
+<body>
+    <div id="app">
+        <div>
+            <h2>Guess the number (1 - 10)</h2>
+        
+            <input type="number" v-model="input" :disabled="isDisabled">
+            <button @click="guess" @click="guess" :disabled="isDisabled">Try your luck!</button>
+        </div>
+
+        <div>
+            <div v-show="guessFalse">
+                False!
+                <button @click="tryAgain">Try Again</button>
+            </div>
+
+            <div v-show="guessTrue">
+                Correct! Congratulations
+                <button @click="playAgain">Play Again</button>
+            </div>
+
+            <div v-show="failed">
+                No attempt left!
+                <h3>The correct answer is {{randomNumber}}</h3>
+                <button @click="playAgain">Re-attempt</button>
+            </div>
+        </div> 
+
+        <p>{{ attempt }} attempt left.</p>
+
+        <footer>
+            {{me.nama}} | {{me.npm}} | {{me.kelas}}
+        </footer>
+
+    </div>
+
+   
+</body>
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            attempt : 3,
+            input : 0,
+            randomNumber : Math.floor(Math.random()*10)+1,
+            failed : undefined,
+            guessTrue : undefined,
+            guessFalse : undefined,
+            isDisabled : false,
+
+            me: {
+                nama : 'Julius Diky',
+                npm : '9876',
+                kelas: 'A',
+            },
+        },
+        methods:{
+            start(){
+                console.log(this.randomNumber)
+            },
+            guess(){
+                console.log(this.randomNumber)
+                if(this.input == this.randomNumber){
+                    this.guessTrue = 1;
+                    this.isDisabled = true;
+                } else {
+                    this.attempt--;
+                    this.isDisabled = true;
+                    this.guessFalse = 1;
+                    if(this.attempt == 0){
+                        this.failed = 1;
+                        this.guessFalse = undefined;
+                    }
+                }
+            },
+            
+            tryAgain(){
+                this.isDisabled = false;
+                this.guessFalse = undefined;
+            },
+
+            playAgain(){
+                location.reload();
+            },
+        },
+    });
+</script>
+</html>
